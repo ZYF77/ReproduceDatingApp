@@ -19,6 +19,8 @@ public class Member
 
     // Navigation property
     [JsonIgnore]
+    public List<Photo> Photos { get; set; } = [];//初始化为空列表
+    [JsonIgnore]
     [ForeignKey(nameof(Id))]
     public AppUser User { get; set; } = null!;
 
