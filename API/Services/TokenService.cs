@@ -8,6 +8,7 @@ using API.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.IdentityModel.JsonWebTokens; //高并发时考虑替换
 
 namespace API.Services;
 
@@ -27,6 +28,10 @@ public class TokenService(IOptions<JwtSettings> options,UserManager<AppUser> use
             new(ClaimTypes.Name,user.Email!),
             new(ClaimTypes.NameIdentifier,user.Id.ToString())
         };
+        if (user.Member != null)
+        {
+            claims.Add(new Claim(ClaimTypes.DateOfBirth, user.Member.DateOfBirth.ToString("yyyy-MM-dd")));
+        }
         var roles = await userManager.GetRolesAsync(user);
         claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 

@@ -63,6 +63,11 @@ public class Seed
                 }
                 continue; 
             }
+            var resultMember = await userManager.AddToRoleAsync(user, "Member");
+            if (!resultMember.Succeeded)
+            {
+                logger.LogWarning("Failed to Add Admin role user: {ErrorDescription}",resultMember.Errors.First().Description);
+            }
         }
         var admin = new AppUser
         {

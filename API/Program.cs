@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Text;
 using API.Data;
 using API.Entities;
@@ -90,6 +91,29 @@ try
         
 
     });
+    //添加角色及策略授权验证
+    builder.Services.AddAuthorizationBuilder()
+        .AddPolicy("Name",policy =>
+        {
+            policy.RequireClaim(ClaimTypes.DateOfBirth)
+            //逻辑授权
+            .RequireAssertion(context => //context包含当前请求的所有上下文
+            {
+                var dobClaim = context.User.FindFirst(ClaimTypes.DateOfBirth);
+                if (dobClaim != null && DateTime.TryParse(dobClaim.Value,out var dob))
+                {
+                    var age = DateTime.Today.Year - dob.Year;
+                    if (dob > DateTime.Today.AddYears(-age)) age--;
+                    return age >= 18;
+                }
+                return false;
+            });
+            
+        })
+        .AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"))
+        .AddPolicy("ModeratePhotoRole", policy => policy.RequireRole("Admin", "Moderator"));;
+
+
     var app = builder.Build();
     // Configure the HTTP request pipeline.
     //第一步全局异常处理中间件
