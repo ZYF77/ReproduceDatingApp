@@ -1,7 +1,9 @@
 using System;
 
 namespace API.Helpers;
-
+/// <summary>
+/// 分页请求基类
+/// </summary>
 public class PagingParams
 {
     public const int MaxPageSize = 50;

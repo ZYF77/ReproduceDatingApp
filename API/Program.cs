@@ -31,6 +31,8 @@ try
     builder.Services.AddControllers();
     builder.Services.AddCors();
     builder.Services.AddScoped<ITokenService, TokenService>();
+    builder.Services.AddScoped<IMemberRepository, MemberRepository>();
+    builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
     builder.Services.AddMemoryCache(); // 添加内存缓存服务
 
     builder.Services.AddDbContext<AppDbContext>(options =>
