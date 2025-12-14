@@ -1,3 +1,8 @@
-<p>Hello world</p>
+<app-nav/>
 
-{{testData()?.id}} - {{testData()?.username}} - {{testData()?.email}}
+<div
+    [class.mt-24]="router.url !== '/'"
+    [class.container]="router.url !== '/'"
+    [class.mx-auto]="router.url !== '/'">
+    <router-outlet/>
+</div>

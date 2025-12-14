@@ -1,29 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { environment } from '../environments/environment';
 import { User } from '../types/user';
+import { Nav } from "../layout/nav/nav";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, Nav],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App implements OnInit {
-  protected readonly title = signal('client');
-  private http = inject(HttpClient);
-  baseUrl = environment.apiUrl;
-  protected testData = signal<User | null>(null);
-
-
-  ngOnInit(): void {
-    this.http.get<User>(this.baseUrl + 'account/test').subscribe({
-      next: (data) => this.testData.set(data as User),
-      error: (error) => console.error('API Error:', error)
-    });
-  }
-
-
-
+export class App {
+  protected router = inject(Router);
 }
